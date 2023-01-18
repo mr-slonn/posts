@@ -4,7 +4,12 @@ import data.Post
 
 class WallService {
     private var posts = emptyArray<Post>()
-    private var postId = 0
+    private var postId = 0L
+
+    fun clear() {
+        posts = emptyArray()
+        postId = 0
+    }
 
     fun add(post: Post): Post {
         postId += 1
@@ -22,7 +27,7 @@ class WallService {
         return false
     }
 
-    fun removeById(id: Int): Boolean {
+    fun removeById(id: Long): Boolean {
         val postsList = posts.toMutableList()
         for ((index, post) in posts.withIndex()) {
             if (post.id == id) {
@@ -34,12 +39,25 @@ class WallService {
         return false
     }
 
-    fun likeById(id: Int) {
+    fun likeById(id: Long): Boolean {
         for ((index, post) in posts.withIndex()) {
             if (post.id == id) {
                 posts[index] = post.copy(likes = post.likes.copy(count = +1))
-                break
+                return true
             }
         }
+        return false
     }
+
+    fun getLikeById(id: Long): Int {
+        for (post in posts) {
+            if (post.id == id) {
+                return post.likes.count
+            }
+        }
+        return 0
+    }
+
+
+
 }

@@ -1,6 +1,6 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.7.21'
-    id 'application'
+    id 'jacoco'
 }
 
 group = 'ru.netology'
@@ -12,12 +12,9 @@ repositories {
 
 dependencies {
     testImplementation 'org.jetbrains.kotlin:kotlin-test'
-    testImplementation 'org.testng:testng:7.1.0'
+    testImplementation 'junit:junit:4.13.2'
 }
 
-test {
-    useJUnitPlatform()
-}
 
 compileKotlin {
     kotlinOptions.jvmTarget = '1.8'
@@ -27,6 +24,3 @@ compileTestKotlin {
     kotlinOptions.jvmTarget = '1.8'
 }
 
-application {
-    mainClassName = 'MainKt'
-}

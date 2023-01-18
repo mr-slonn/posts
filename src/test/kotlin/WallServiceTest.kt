@@ -1,24 +1,126 @@
 import data.Post
+import org.junit.Assert
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
+import org.junit.Test
 import service.WallService
 
 class WallServiceTest {
+
     @Test
     fun updateExisting() {
-        // создаём целевой сервис
-        val service = WallService()
-        // заполняем несколькими постами
-        service.add(Post(
 
-        ))
-        service.add(Post(/* заполняете поля */))
-        service.add(Post(/* заполняете поля */))
-        // создаём информацию об обновлении
-        val update = Post(/* заполняете поля */)
+        val  service = WallService()
 
-        // выполняем целевое действие
+        service.add(
+            Post(
+                fromId = 1,
+                text = "Привет я пост 1",
+            )
+        )
+        service.add(
+            Post(
+                fromId = 2,
+
+                text = "Привет я пост 2",
+            )
+        )
+        service.add(
+            Post(
+                fromId = 1,
+                text = "Привет я пост 3",
+
+                )
+        )
+        val update = Post(
+            id = 1,
+            fromId = 1,
+            text = "Привет я пост изменны",
+        )
         val result = service.update(update)
-
-        // проверяем результат (используйте assertTrue или assertFalse)
         assertTrue(result)
+    }
+
+    @Test
+    fun removeById() {
+        val  service = WallService()
+
+        service.add(
+            Post(
+                fromId = 1,
+                text = "Привет я пост 1",
+            )
+        )
+        service.add(
+            Post(
+                fromId = 2,
+
+                text = "Привет я пост 2",
+            )
+        )
+        service.add(
+            Post(
+                fromId = 1,
+                text = "Привет я пост 3",
+
+                )
+        )
+
+        val result = service.removeById(1)
+        assertTrue(result)
+    }
+
+    @Test
+    fun removeByIdFalse() {
+        val  service = WallService()
+
+        service.add(
+            Post(
+                fromId = 1,
+                text = "Привет я пост 1",
+            )
+        )
+        service.add(
+            Post(
+                fromId = 2,
+
+                text = "Привет я пост 2",
+            )
+        )
+        service.add(
+            Post(
+                fromId = 1,
+                text = "Привет я пост 3",
+
+                )
+        )
+        val result = service.removeById(4)
+        assertFalse(result)
+    }
+
+    @Test
+    fun likeById() {
+        val  service = WallService()
+        service.add(
+            Post(
+                fromId = 1,
+                text = "Привет я пост 1",
+            )
+        )
+        service.add(
+            Post(
+                fromId = 2,
+                text = "Привет я пост 2",
+            )
+        )
+        service.add(
+            Post(
+                fromId = 1,
+                text = "Привет я пост 3",
+                )
+        )
+         service.likeById(1)
+        val result = service.getLikeById (1)
+        Assert.assertEquals(1, result)
     }
 }
