@@ -1,14 +1,38 @@
 package service
 
+import data.Comment
 import data.Post
 
+class PostNotFoundException(message: String) : RuntimeException(message)
 class WallService {
     private var posts = emptyArray<Post>()
     private var postId = 0L
+    private var commentTd = 0L
+    private var comments = emptyArray<Comment>()
+
+
+    fun findById(id: Long): Post? {
+        for (post in posts) {
+            if (post.id == id) {
+                return post
+            }
+        }
+        return null
+    }
+
+    fun createComment(postId: Long, comment: Comment): Comment {
+        val post = findById(postId) ?: throw PostNotFoundException("post not found")
+        commentTd += 1
+        val newComment = comment.copy(id = commentTd)
+        comments += newComment
+        return newComment
+    }
 
     fun clear() {
         posts = emptyArray()
         postId = 0
+        comments = emptyArray()
+        commentTd = 0
     }
 
     fun add(post: Post): Post {
@@ -20,7 +44,7 @@ class WallService {
     fun update(post: Post): Boolean {
         for ((index, oldPost) in posts.withIndex()) {
             if (oldPost.id == post.id) {
-                posts[index] = post.copy(id=oldPost.id,fromId = oldPost.fromId, date = oldPost.date )
+                posts[index] = post.copy(id = oldPost.id, fromId = oldPost.fromId, date = oldPost.date)
                 return true
             }
         }
@@ -57,7 +81,6 @@ class WallService {
         }
         return 0
     }
-
 
 
 }

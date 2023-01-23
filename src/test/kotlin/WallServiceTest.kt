@@ -1,3 +1,4 @@
+import data.Comment
 import data.Post
 import org.junit.Assert
 import org.junit.Assert.assertFalse
@@ -122,5 +123,35 @@ class WallServiceTest {
          service.likeById(1)
         val result = service.getLikeById (1)
         Assert.assertEquals(1, result)
+    }
+
+    @Test
+    fun createComment() {
+        val  service = WallService()
+        service.add(
+            Post(
+                fromId = 1,
+                text = "Привет я пост 1",
+            )
+        )
+        service.add(
+            Post(
+                fromId = 2,
+                text = "Привет я пост 2",
+            )
+        )
+        service.add(
+            Post(
+                fromId = 1,
+                text = "Привет я пост 3",
+            )
+        )
+
+        val result = service.createComment(1, Comment(
+            text = "Привет я коммент к посту  1",
+        )
+        )
+
+        Assert.assertEquals(Comment(id=1,text = "Привет я коммент к посту  2"  ), result)
     }
 }
