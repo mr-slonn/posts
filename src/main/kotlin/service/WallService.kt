@@ -23,7 +23,7 @@ class WallService {
     fun createComment(postId: Long, comment: Comment): Comment {
         val post = findById(postId) ?: throw PostNotFoundException("post not found")
         commentTd += 1
-        val newComment = comment.copy(id = commentTd)
+        val newComment = comment.copy(id = commentTd, fromId = comment.fromId?:post.fromId )
         comments += newComment
         return newComment
     }

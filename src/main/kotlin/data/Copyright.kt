@@ -1,8 +1,8 @@
 package data
 
-data class Copyright (
-    val id: Int = 0,
-    val link: String="",
-    val name: String="",
-    val type: String="",
+data class Copyright(
+    val id: Int,
+    val link: String? = null,
+    val name: String? = null,
+    val type: String? = null,
 )

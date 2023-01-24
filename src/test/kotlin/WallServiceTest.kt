@@ -4,6 +4,7 @@ import org.junit.Assert
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import service.PostNotFoundException
 import service.WallService
 
 class WallServiceTest {
@@ -11,18 +12,18 @@ class WallServiceTest {
     @Test
     fun updateExisting() {
 
-        val  service = WallService()
+        val service = WallService()
 
         service.add(
             Post(
                 fromId = 1,
                 text = "Привет я пост 1",
-            )
+
+                )
         )
         service.add(
             Post(
                 fromId = 2,
-
                 text = "Привет я пост 2",
             )
         )
@@ -30,13 +31,12 @@ class WallServiceTest {
             Post(
                 fromId = 1,
                 text = "Привет я пост 3",
-
-                )
+            )
         )
         val update = Post(
             id = 1,
             fromId = 1,
-            text = "Привет я пост изменны",
+            text = "Привет я пост изменены",
         )
         val result = service.update(update)
         assertTrue(result)
@@ -44,7 +44,7 @@ class WallServiceTest {
 
     @Test
     fun removeById() {
-        val  service = WallService()
+        val service = WallService()
 
         service.add(
             Post(
@@ -55,7 +55,6 @@ class WallServiceTest {
         service.add(
             Post(
                 fromId = 2,
-
                 text = "Привет я пост 2",
             )
         )
@@ -73,7 +72,7 @@ class WallServiceTest {
 
     @Test
     fun removeByIdFalse() {
-        val  service = WallService()
+        val service = WallService()
 
         service.add(
             Post(
@@ -101,7 +100,7 @@ class WallServiceTest {
 
     @Test
     fun likeById() {
-        val  service = WallService()
+        val service = WallService()
         service.add(
             Post(
                 fromId = 1,
@@ -118,16 +117,16 @@ class WallServiceTest {
             Post(
                 fromId = 1,
                 text = "Привет я пост 3",
-                )
+            )
         )
-         service.likeById(1)
-        val result = service.getLikeById (1)
+        service.likeById(1)
+        val result = service.getLikeById(1)
         Assert.assertEquals(1, result)
     }
 
     @Test
     fun createComment() {
-        val  service = WallService()
+        val service = WallService()
         service.add(
             Post(
                 fromId = 1,
@@ -147,11 +146,42 @@ class WallServiceTest {
             )
         )
 
-        val result = service.createComment(1, Comment(
-            text = "Привет я коммент к посту  1",
-        )
+        val result = service.createComment(
+            1, Comment(
+                text = "Привет я коммент к посту  1",
+            )
         )
 
-        Assert.assertEquals(Comment(id=1,text = "Привет я коммент к посту  2"  ), result)
+        Assert.assertEquals(Comment(id = 1, fromId = 1, text = "Привет я коммент к посту  1"), result)
+    }
+
+    @Test(expected = PostNotFoundException::class)
+    fun shouldThrow() {
+        val service = WallService()
+        service.add(
+            Post(
+                fromId = 1,
+                text = "Привет я пост 1",
+            )
+        )
+        service.add(
+            Post(
+                fromId = 2,
+                text = "Привет я пост 2",
+            )
+        )
+        service.add(
+            Post(
+                fromId = 1,
+                text = "Привет я пост 3",
+            )
+        )
+
+        val result = service.createComment(
+            5, Comment(
+                text = "Привет я коммент к посту  1",
+            )
+        )
+
     }
 }
